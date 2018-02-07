@@ -48,7 +48,11 @@ app.get('/getAnnotation', (req, res, next) => {
 });
 
 app.get('/postNode', (req, res, next) => {
-  db.collection('trailNode').insertOne(`${req}` : "test");
+  const node = req;
+  db.collection('trailNode').insertOne(node, (err, res) => {
+    if (err) throw err;
+    db.close();
+  });
 });
 
 // START THE SERVER
