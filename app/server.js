@@ -47,11 +47,13 @@ app.get('/getAnnotation', (req, res, next) => {
   });
 });
 
-app.get('/postNode', (req, res, next) => {
-  const node = req;
+app.post('/postNode', (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body.lat);
+  const node = { lat: `${req.body.lat}`, long: `${req.body.lon}` };
   db.collection('trailNode').insertOne(node, (err, res) => {
     if (err) console.log(`error occured: ${err}`);
-    else console.log(`${req} successfully posted`);
+    else console.log(`${node} successfully posted`);
   });
 });
 
