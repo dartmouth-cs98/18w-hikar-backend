@@ -37,17 +37,18 @@ app.get('/', (req, res, next) => {
 
 app.get('/getNode', (req, res, next) => {
   db.collection('trailNode').find().toArray((err, result) => {
-    console.log(result);
+    res.send(result);
+  });
+});
+
+app.get('/getAnnotation', (req, res, next) => {
+  db.collection('annotation').find().toArray((err, result) => {
     res.send(result);
   });
 });
 
 app.get('/postNode', (req, res, next) => {
-  db.collection('trailNode').insert({ lat: 20.536, long: -3.225 });
-  db.collection('trailNode').find().toArray((err, result) => {
-    console.log(result);
-    return result;
-  });
+  db.collection('trailNode').insertOne(`${req}` : "test");
 });
 
 // START THE SERVER
