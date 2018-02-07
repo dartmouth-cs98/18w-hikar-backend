@@ -32,7 +32,7 @@ MongoClient.connect(uri, (err, database) => {
 });
 // default index route
 app.get('/', (req, res, next) => {
-  res.sendFile(path.join(`${__dirname}/index.html`));
+  res.send('Welcome to the HikAR server');
 });
 
 app.get('/getNode', (req, res, next) => {
@@ -51,6 +51,7 @@ app.get('/postNode', (req, res, next) => {
   const node = req;
   db.collection('trailNode').insertOne(node, (err, res) => {
     if (err) console.log(`error occured: ${err}`);
+    else console.log(`${req} successfully posted`);
   });
 });
 
