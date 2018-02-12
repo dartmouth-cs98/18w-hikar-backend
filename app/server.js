@@ -48,8 +48,6 @@ app.get('/getAnnotation', (req, res, next) => {
 });
 
 app.post('/postNode', (req, res, next) => {
-  console.log(req.body);
-  console.log(req.body.lat);
   const node = { lat: `${req.body.lat}`, long: `${req.body.lon}` };
   db.collection('trailNode').insertOne(node, (err, res) => {
     if (err) console.log(`error occured: ${err}`);
@@ -57,6 +55,13 @@ app.post('/postNode', (req, res, next) => {
   });
 });
 
+app.post('/postAnnotation', (req, res, next) => {
+  const node = { type: `${req.body.type}`, text: `${req.body.text}` };
+  db.collection('annotation').insertOne(node, (err, res) => {
+    if (err) console.log(`error occured: ${err}`);
+    else console.log(`${node} successfully posted`);
+  });
+});
 // START THE SERVER
 // =============================================================================
 const port = process.env.PORT || 9090;
