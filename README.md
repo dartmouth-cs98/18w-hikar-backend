@@ -1,21 +1,30 @@
-# Project Name
+# HikAR backend Repo
 
-Hikar
+The Hikar backend server handles the storage and access to hiking trails, annotations and user profiles.
+
 
 ## Architecture
 
-Heroku with mLab using MongoDB
+* node with babel
+* express.js
+* airbnb eslint rule
+* mLab using MongoDB
+* Deployed on Heroku [here](http://hikar.herokuapp.com/)
 
 ## Setup
 
-TODO: how to get the project dev environment up and running, npm install etc
+* clone into local repository
+* install dependencies using the command `npm install`
+* Run locally using the command `npm run dev`
 
 ## Deployment
 
-TODO: how to deploy the project
+* Deploy to Heroku with the command `git push heroku master`
 
 ## Authors
 
-TODO: list of authors
-
-## Acknowledgments
+Dami Apoeso  
+Raunak Bhojwani  
+Johnny Brady  
+Gregory Hunter  
+Josh Thomas  

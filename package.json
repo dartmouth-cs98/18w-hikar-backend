@@ -19,9 +19,12 @@
     "body-parser": "^1.18.2",
     "console-log-html": "^2.0.2",
     "cors": "^2.8.3",
+    "dom-parser": "^0.1.5",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
-    "mongodb": "^3.0.2"
+    "mongodb": "^3.0.2",
+    "xmldom": "^0.1.27",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
