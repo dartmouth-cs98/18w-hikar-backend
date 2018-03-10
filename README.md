@@ -23,8 +23,11 @@ The Hikar backend server handles the storage and access to hiking trails, annota
 
 ## Authors
 
-Dami Apoeso  
+Dami Apoeso 
+Josh Thomas
+James Wang
+Gregory Hunter 
 Raunak Bhojwani  
 Johnny Brady  
-Gregory Hunter  
-Josh Thomas  
+ 
+  
