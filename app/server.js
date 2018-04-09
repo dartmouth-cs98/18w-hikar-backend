@@ -36,10 +36,21 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/getNode', (req, res, next) => {
-  db.collection('trailNode').find().toArray((err, result) => {
+  db.collection('trailNodes').find().toArray((err, result) => {
     res.send(result);
   });
 });
+
+app.get('/getNode/:nodeID', (req, res, next) => {
+  const id = parseInt(req.params.nodeID, 10);
+  console.log(id);
+  db.collection('trailNodes').findOne({ nodeID: id }, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+    // db.close();
+  });
+});
+
 
 app.get('/getAnnotation', (req, res, next) => {
   db.collection('annotation').find().toArray((err, result) => {
@@ -48,12 +59,33 @@ app.get('/getAnnotation', (req, res, next) => {
 });
 
 app.post('/postNode', (req, res, next) => {
-  const node = { lat: `${req.body.lat}`, long: `${req.body.lon}` };
-  db.collection('trailNode').insertOne(node, (err, res) => {
+  const node = { lat: `${req.body.lat}`, lon: `${req.body.lon}`, nodeID: `${req.body.nodeID}` };
+  db.collection('trailNodes').insertOne(node, (err, res) => {
     if (err) console.log(`error occured: ${err}`);
     else console.log(`${node} successfully posted`);
   });
 });
+
+app.post('/postTrail', (req, res, next) => {
+  console.log(req);
+  const node = {
+    name: `${req.body.name}`,
+    nodes: [],
+    trailID: `${req.body.nodeID}`,
+  };
+  // db.collection('trails').insertOne(node, (err, res) => {
+  //   if (err) console.log(`error occured: ${err}`);
+  //   else console.log(`${node} successfully posted`);
+  // });
+});
+
+// app.post('/postNodes', (req, res, next) => {
+//   const node = { lat: `${req.body.lat}`, lon: `${req.body.lon}`, nodeID: `${req.body.nodeID}` };
+//   db.collection('trailNode').insertMany(node, (err, res) => {
+//     if (err) console.log(`error occured: ${err}`);
+//     else console.log(`${node} successfully posted`);
+//   });
+// });
 
 app.post('/postAnnotation', (req, res, next) => {
   const node = { type: `${req.body.type}`, text: `${req.body.text}` };
