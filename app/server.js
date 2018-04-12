@@ -41,6 +41,23 @@ app.get('/getNode', (req, res, next) => {
   });
 });
 
+app.get('/getTrails', (req, res, next) => {
+  db.collection('trails').find().toArray((err, result) => {
+    res.send(result);
+  });
+});
+
+app.get('/getTrail/:name', (req, res, next) => {
+  const id = req.params.name;
+  console.log(id.replace(/\-/g, ' '));
+  db.collection('trails').findOne({ name: id.replace(/\-/g, ' ') }, (err, result) => {
+    if (err) throw err;
+    console.log(err);
+    res.send(result);
+    // db.close();
+  });
+});
+
 app.get('/getNode/:nodeID', (req, res, next) => {
   const id = parseInt(req.params.nodeID, 10);
   console.log(id);

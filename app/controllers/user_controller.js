@@ -26,11 +26,9 @@ export const signup = (req, res, next) => {
     return res.status(422).send('You must provide email and password');
   }
 
-  search Database to see if user pre-exists
+  // search Database to see if user pre-exists
   User.findOne({ username }).then((oldUsername) => {
     if (oldUsername) {
-      console.log('= = = = = = = == = = = = == ');
-      console.log(oldUser);
       return res.status(422).send('This user already exists!');
     } else {
       user.password = password;

@@ -125,9 +125,11 @@ function postMany(Arr) {
     if (err) {
       throw err;
     }
-    collection = db.collection('trailNodes');
+    collection = db.collection('trails');
     collection.insertMany(entries);
     if (err) console.log(`error occured: ${err}`);
     else console.log('successfully posted');
   });
 }
+
+postMany(trails);
