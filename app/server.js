@@ -41,6 +41,12 @@ app.get('/getNode', (req, res, next) => {
   });
 });
 
+app.get('/getTest', (req, res, next) => {
+  db.collection('loc1').find().toArray((err, result) => {
+    res.send(result);
+  });
+});
+
 app.get('/getTrails', (req, res, next) => {
   db.collection('trailDataTest').find().toArray((err, result) => {
     res.send(result);
