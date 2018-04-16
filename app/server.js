@@ -48,7 +48,7 @@ app.get('/getTest', (req, res, next) => {
 });
 
 app.get('/getTrails', (req, res, next) => {
-  db.collection('trailDataTest').find().toArray((err, result) => {
+  db.collection('trailDataNH').find().toArray((err, result) => {
     res.send(result);
   });
 });
@@ -59,7 +59,7 @@ app.get('/queryTrail/:lat/:lon/:radius', (req, res, next) => {
   const rad = parseInt(req.params.radius, 10);
   console.log(lat, lon, rad);
   const METERS_PER_MILE = 1609.34;
-  db.collection('trailDataTest').find({
+  db.collection('trailDataNH').find({
     geometry: {
       $nearSphere: {
         $geometry: {
@@ -72,7 +72,12 @@ app.get('/queryTrail/:lat/:lon/:radius', (req, res, next) => {
   }).toArray((err, result) => {
     if (err) throw err;
     console.log(result);
-    res.send(result[0].name);
+    const names = [];
+    let i;
+    for (i in result) {
+      if (result[i].name) names.push(result[i].name);
+    }
+    res.send(names);
   });
 });
 

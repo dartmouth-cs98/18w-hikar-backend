@@ -1,11 +1,11 @@
 const axios = require('axios');
 const config = require('./export.json');
-const geo = require('./export2.json');
+const geo = require('./rad_60_Hanover.json');
 
 const mongodb = require('mongodb');
 
 // console.log(geo.features[0].properties.name);
-console.log(geo.features[0].geometry.coordinates[0]);
+// console.log(geo.features[0].geometry.coordinates[0]);
 // const fs = require('fs');
 
 
@@ -29,15 +29,16 @@ function getObjects(obj, key, val) {
   }
   return objects;
 }
-
-const data = {
-  name: geo.features[0].properties.name,
-  geometry: geo.features[0].geometry,
-};
-
-console.log(data);
 const trails = [];
-trails.push(data);
+for (i in geo.features) {
+  const data = {
+    name: geo.features[i].properties.name,
+    geometry: geo.features[i].geometry,
+  };
+  trails.push(data);
+}
+
+console.log(trails.length);
 
 
 // for (i = 0; i < elements.length; i++) {
@@ -138,12 +139,12 @@ function postMany(Arr) {
     if (err) {
       throw err;
     }
-    collection = db.collection('trailDataTest');
+    collection = db.collection('trailDataNH');
     collection.createIndex({ geometry: '2dsphere' });
-    // collection.insertMany(entries);
+    collection.insertMany(entries);
     if (err) console.log(`error occured: ${err}`);
     else console.log('successfully posted');
   });
 }
 
-// postMany(trails);
+postMany(trails);
