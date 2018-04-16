@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
 import mongodb from 'mongodb';
+import { calcDistance } from './distance.js';
 
 // initialize
 const app = express();
@@ -57,6 +58,7 @@ app.get('/queryTrail/:lat/:lon/:radius', (req, res, next) => {
   const lat = parseFloat(req.params.lat, 10);
   const lon = parseFloat(req.params.lon, 10);
   const rad = parseInt(req.params.radius, 10);
+  const milesInKM = 0.62137119;
   console.log(lat, lon, rad);
   const METERS_PER_MILE = 1609.34;
   db.collection('trailDataNH').find({
@@ -71,11 +73,28 @@ app.get('/queryTrail/:lat/:lon/:radius', (req, res, next) => {
     },
   }).toArray((err, result) => {
     if (err) throw err;
-    console.log(result);
+    // console.log(result);
     const names = [];
     let i;
     for (i in result) {
-      if (result[i].name) names.push(result[i].name);
+      if (result[i].name) {
+        // console.log(result[i].geometry.coordinates[0][0]);
+        var distanceKM = 0;
+        if (result[i].geometry.coordinates[0][0].length > 1) {
+          console.log(result[i].geometry.coordinates[0][0][0], result[i].geometry.coordinates[0][0][1])
+          distanceKM = calcDistance(result[i].geometry.coordinates[0][0][0], result[i].geometry.coordinates[0][0][1], lat, lon);
+        }
+        else {
+          console.log(result[i].geometry.coordinates[0][0], result[i].geometry.coordinates[0][1])
+
+          distanceKM = calcDistance(result[i].geometry.coordinates[0][0], result[i].geometry.coordinates[0][1], lat, lon);
+        }
+        // var distanceKM = calcDistance(result[i].geometry.coordinates[0][0], result[i].geometry.coordinates[0][1], lat, lon);
+        console.log(distanceKM);
+        var distanceMiles = milesInKM * distanceKM;
+        names.push([result[i].name, distanceMiles]);
+        // names.push(result[i].name);
+      } 
     }
     res.send(names);
   });
