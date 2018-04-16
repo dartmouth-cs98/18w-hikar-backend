@@ -42,8 +42,31 @@ app.get('/getNode', (req, res, next) => {
 });
 
 app.get('/getTrails', (req, res, next) => {
-  db.collection('trails').find().toArray((err, result) => {
+  db.collection('trailDataTest').find().toArray((err, result) => {
     res.send(result);
+  });
+});
+
+app.get('/queryTrail/:lat/:lon/:radius', (req, res, next) => {
+  const lat = parseFloat(req.params.lat, 10);
+  const lon = parseFloat(req.params.lon, 10);
+  const rad = parseInt(req.params.radius, 10);
+  console.log(lat, lon, rad);
+  const METERS_PER_MILE = 1609.34;
+  db.collection('trailDataTest').find({
+    geometry: {
+      $nearSphere: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lat, lon],
+        },
+        $maxDistance: rad * METERS_PER_MILE,
+      },
+    },
+  }).toArray((err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result[0].name);
   });
 });
 

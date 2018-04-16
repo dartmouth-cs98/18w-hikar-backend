@@ -4,7 +4,8 @@ const geo = require('./export2.json');
 
 const mongodb = require('mongodb');
 
-console.log(geo.features[0].id);
+// console.log(geo.features[0].properties.name);
+console.log(geo.features[0].geometry.coordinates[0]);
 // const fs = require('fs');
 
 
@@ -29,31 +30,43 @@ function getObjects(obj, key, val) {
   return objects;
 }
 
-const trails = [];
-for (i = 0; i < elements.length; i++) {
-  if (elements[i].type == 'relation') {
-    const nodes = [];
-    const ways = elements[i].members;
-    for (j = 0; j < ways.length; j++) {
-      // console.log();
-      const objs = getObjects(config, 'id', ways[j].ref);
-      for (node in objs[0].nodes) {
-        // console.log(objs[0].nodes[node]);
-        nodes.push(objs[0].nodes[node]);
-      }
-    }
-    // console.log(nodes);
-    const data = {
-      name: elements[i].tags.name,
-      relationID: elements[i].id,
-      TrailNodes: nodes,
-    };
-    // console.log(nodes[nodes.length / 2]);
-    trails.push(data);
-  }
-}
+const data = {
+  name: geo.features[0].properties.name,
+  geometry: geo.features[0].geometry,
+};
 
-console.log(trails[2]);
+console.log(data);
+const trails = [];
+trails.push(data);
+
+
+// for (i = 0; i < elements.length; i++) {
+//   if (elements[i].type == 'relation') {
+//     const nodes = [];
+//     const ways = elements[i].members;
+//     for (j = 0; j < ways.length; j++) {
+//       // console.log();
+//       const objs = getObjects(config, 'id', ways[j].ref);
+//       for (node in objs[0].nodes) {
+//         const nID = objs[0].nodes[node];
+//         const objs2 = getObjects(config, 'id', nID);
+//         // console.log(objs2[0].lat, nID);
+//         const geo = [objs2[0].lat, objs2[0].lon];
+//         nodes.push(geo);
+//       }
+//     }
+//     // console.log(nodes);
+//     const data = {
+//       name: elements[i].tags.name,
+//       relationID: elements[i].id,
+//       TrailNodes: nodes,
+//     };
+//     // console.log(nodes[nodes.length / 2]);
+//     trails.push(data);
+//   }
+// }
+
+// console.log(trails[2]);
 
 // console.log(relationID);
 
@@ -125,11 +138,12 @@ function postMany(Arr) {
     if (err) {
       throw err;
     }
-    collection = db.collection('trails');
-    collection.insertMany(entries);
+    collection = db.collection('trailDataTest');
+    collection.createIndex({ geometry: '2dsphere' });
+    // collection.insertMany(entries);
     if (err) console.log(`error occured: ${err}`);
     else console.log('successfully posted');
   });
 }
 
-postMany(trails);
+// postMany(trails);
