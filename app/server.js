@@ -103,7 +103,7 @@ app.get('/queryTrail/:lat/:lon/:radius', (req, res, next) => {
 app.get('/getTrail/:name', (req, res, next) => {
   const id = req.params.name;
   console.log(id.replace(/\-/g, ' '));
-  db.collection('trails').findOne({ name: id.replace(/\-/g, ' ') }, (err, result) => {
+  db.collection('trailDataNH').findOne({ name: id.replace(/\-/g, ' ') }, (err, result) => {
     if (err) throw err;
     console.log(err);
     res.send(result);
