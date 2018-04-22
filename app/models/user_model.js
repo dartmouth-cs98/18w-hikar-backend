@@ -1,19 +1,21 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const UserSchema = new Schema({
+const User = new Schema({
   username: String,
   first: String,
   last: String,
   password: { type: String, select: false },
+  TrailHistory: { type: Array },
+  Distance: Number,
 });
 
-UserSchema.set('toJSON', {
+User.set('toJSON', {
   virtuals: true,
 });
 
 /* Pre save hook to convert the plaintext password to the hashed password */
-UserSchema.pre('save', function saveSaltAndHashPassword(next) {
+User.pre('save', function saveSaltAndHashPassword(next) {
   const user = this;
 
   // only hash the password if it has been modified (or is new)
@@ -35,3 +37,17 @@ UserSchema.pre('save', function saveSaltAndHashPassword(next) {
     });
   });
 });
+
+/* Method to compare a password to see if it is valid */
+User.methods.comparePassword = function comparePassword(candidatePassword,
+  callback) {
+  bcrypt.compare(candidatePassword, this.password, (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
+  });
+};
+
+
+const UserModel = mongoose.model('User', User);
+
+export default UserModel;

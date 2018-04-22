@@ -4,6 +4,12 @@ import User from '../models/user_model';
 
 dotenv.config({ silent: true });
 
+export const getUsers = (req, res, next) => {
+  User.find((err, result) => {
+    res.send(result);
+  });
+};
+
 // encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
@@ -18,12 +24,14 @@ export const signin = (req, res, next) => {
 // Sign up new user
 export const signup = (req, res, next) => {
   const user = new User();
-  const email = req.body.email;
   const password = req.body.password;
   const username = req.body.username;
+  const trails = [];
+  console.log(req.body);
 
-  if (!email || !password || !username) {
-    return res.status(422).send('You must provide email and password');
+
+  if (!password || !username) {
+    return res.status(422).send('You must provide username and password');
   }
 
   // search Database to see if user pre-exists
@@ -33,6 +41,7 @@ export const signup = (req, res, next) => {
     } else {
       user.password = password;
       user.username = username;
+      user.Distance = 0;
       user.save().then((result) => {
         console.log(user.password);
         res.send({ token: tokenForUser(result) });

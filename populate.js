@@ -139,7 +139,7 @@ function postMany(Arr) {
     if (err) {
       throw err;
     }
-    collection = db.collection('trailDataNH');
+    collection = db.collection('trails');
     collection.createIndex({ geometry: '2dsphere' });
     collection.insertMany(entries);
     if (err) console.log(`error occured: ${err}`);

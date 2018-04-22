@@ -1,30 +1,77 @@
-// import axios from 'axios';
-const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+import Trails from '../models/trail_model';
+import { calcDistance } from '../distance.js';
 
-const DOMParser = require('xmldom').DOMParser;
 
-const doc = new DOMParser();
-
-const xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function () {
-  if (this.readyState == 4 && this.status == 200) {
-    myFunction(this);
-  }
+export const getTrails = (req, res, next) => {
+  Trails.find((err, result) => {
+    res.send(result);
+  });
 };
-xhr.open('GET', 'https://api.openstreetmap.org//api/0.6/map?bbox=-72.27281,43.70611,-72.24857,43.73093', true);
-xhr.send();
 
-function myFunction(xml) {
-  let x,
-    i,
-    xmlDoc,
-    txt;
-  const dom = doc.parseFromString(xml);
-  txt = '';
-  // console.log(xmlDoc);
-  x = dom.getElementsByTagName('node');
-  console.log(x[0]);
-  // for (i = 0; i < x.length; i++) {
-  //   txt += `${x[i].getAttribute('user')}<br>`;
-  // }
-}
+export const getTrailbyName = (req, res, next) => {
+  const id = req.params.name;
+  console.log(id.replace(/\-/g, ' '));
+  Trails.findOne({ name: id.replace(/\-/g, ' ') }, (err, result) => {
+    if (err) throw err;
+    console.log(err);
+    res.send(result);
+  });
+};
+
+export const queryTrails = (req, res, next) => {
+  const lat = parseFloat(req.params.lat, 10);
+  const lon = parseFloat(req.params.lon, 10);
+  const rad = parseInt(req.params.radius, 10);
+  const milesInKM = 0.62137119;
+  console.log(lat, lon, rad);
+  const METERS_PER_MILE = 1609.34;
+  Trails.find({
+    geometry: {
+      $nearSphere: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lat, lon],
+        },
+        $maxDistance: rad * METERS_PER_MILE,
+      },
+    },
+  }, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    const names = [];
+    let i;
+    for (i in result) {
+      if (result[i].name) {
+        // console.log(result[i].geometry.coordinates[0][0]);
+        let distanceKM = 0;
+        if (result[i].geometry.coordinates[0][0].length > 1) {
+          console.log(result[i].geometry.coordinates[0][0][0], result[i].geometry.coordinates[0][0][1]);
+          distanceKM = calcDistance(result[i].geometry.coordinates[0][0][0], result[i].geometry.coordinates[0][0][1], lat, lon);
+        } else {
+          console.log(result[i].geometry.coordinates[0][0], result[i].geometry.coordinates[0][1]);
+
+          distanceKM = calcDistance(result[i].geometry.coordinates[0][0], result[i].geometry.coordinates[0][1], lat, lon);
+        }
+        // var distanceKM = calcDistance(result[i].geometry.coordinates[0][0], result[i].geometry.coordinates[0][1], lat, lon);
+        console.log(distanceKM);
+        const distanceMiles = milesInKM * distanceKM;
+        names.push([result[i].name, distanceMiles]);
+        // names.push(result[i].name);
+      }
+    }
+    res.send(names);
+  });
+};
+
+export const postTrail = (req, res, next) => {
+  console.log(req);
+  const node = {
+    name: `${req.body.name}`,
+    nodes: [],
+    trailID: `${req.body.nodeID}`,
+  };
+  Trails.insertOne(node, (err, res) => {
+    if (err) console.log(`error occured: ${err}`);
+    else console.log(`${node} successfully posted`);
+  });
+};
