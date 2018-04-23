@@ -40,29 +40,6 @@ app.get('/', (req, res, next) => {
   res.send('Welcome to the HikAR server');
 });
 
-
-app.get('/getAnnotation', (req, res, next) => {
-  db.collection('annotation').find().toArray((err, result) => {
-    res.send(result);
-  });
-});
-
-
-// app.post('/postNodes', (req, res, next) => {
-//   const node = { lat: `${req.body.lat}`, lon: `${req.body.lon}`, nodeID: `${req.body.nodeID}` };
-//   db.collection('trailNode').insertMany(node, (err, res) => {
-//     if (err) console.log(`error occured: ${err}`);
-//     else console.log(`${node} successfully posted`);
-//   });
-// });
-
-app.post('/postAnnotation', (req, res, next) => {
-  const node = { type: `${req.body.type}`, text: `${req.body.text}` };
-  db.collection('annotation').insertOne(node, (err, res) => {
-    if (err) console.log(`error occured: ${err}`);
-    else console.log(`${node} successfully posted`);
-  });
-});
 // START THE SERVER
 // =============================================================================
 const port = process.env.PORT || 9090;
