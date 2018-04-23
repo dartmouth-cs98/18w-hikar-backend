@@ -31,11 +31,13 @@ function getObjects(obj, key, val) {
 }
 const trails = [];
 for (i in geo.features) {
-  const data = {
-    name: geo.features[i].properties.name,
-    geometry: geo.features[i].geometry,
-  };
-  trails.push(data);
+  if (geo.features[i].properties.name) {
+    const data = {
+      name: geo.features[i].properties.name,
+      geometry: geo.features[i].geometry,
+    };
+    trails.push(data);
+  }
 }
 
 console.log(trails.length);
@@ -140,11 +142,11 @@ function postMany(Arr) {
       throw err;
     }
     collection = db.collection('trails');
-    collection.createIndex({ geometry: '2dsphere' });
+    // collection.createIndex({ geometry: '2dsphere' });
     collection.insertMany(entries);
     if (err) console.log(`error occured: ${err}`);
     else console.log('successfully posted');
   });
 }
 
-postMany(trails);
+// postMany(trails);

@@ -10,10 +10,8 @@ export const getTrails = (req, res, next) => {
 
 export const getTrailbyName = (req, res, next) => {
   const id = req.params.name;
-  console.log(id.replace(/\-/g, ' '));
   Trails.findOne({ name: id.replace(/\-/g, ' ') }, (err, result) => {
     if (err) throw err;
-    console.log(err);
     res.send(result);
   });
 };

@@ -40,6 +40,14 @@ app.get('/', (req, res, next) => {
   res.send('Welcome to the HikAR server');
 });
 
+
+app.get('/getAnnotation', (req, res, next) => {
+  db.collection('annotation').find().toArray((err, result) => {
+    res.send(result);
+  });
+});
+
+
 // START THE SERVER
 // =============================================================================
 const port = process.env.PORT || 9090;
