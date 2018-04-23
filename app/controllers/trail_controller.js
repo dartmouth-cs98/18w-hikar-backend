@@ -60,16 +60,3 @@ export const queryTrails = (req, res, next) => {
     res.send(names);
   });
 };
-
-export const postTrail = (req, res, next) => {
-  console.log(req);
-  const node = {
-    name: `${req.body.name}`,
-    nodes: [],
-    trailID: `${req.body.nodeID}`,
-  };
-  Trails.insertOne(node, (err, res) => {
-    if (err) console.log(`error occured: ${err}`);
-    else console.log(`${node} successfully posted`);
-  });
-};

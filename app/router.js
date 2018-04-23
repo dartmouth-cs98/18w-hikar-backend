@@ -22,8 +22,7 @@ router.post('/signup', UserController.signup);
 
 // Return all trails
 router.route('/trails')
-  .get(TrailController.getTrails)
-  .post(TrailController.postTrail);
+  .get(TrailController.getTrails);
 
 // get trail by name
 router.route('/trails/:name')
@@ -34,8 +33,10 @@ router.route('/query/:lat/:lon/:radius')
   .get(TrailController.queryTrails);
 
 // get all users
-router.route('/users')
+router.route('/users/')
+  .put(UserController.UpdateUserInfo)
   .get(UserController.getUsers);
+
 
 router.route('/annotation')
   .get(AnnotationController.getAnnotations)

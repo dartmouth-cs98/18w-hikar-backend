@@ -39,12 +39,12 @@ app.use('/api', apiRouter);
 app.get('/', (req, res, next) => {
   res.send('Welcome to the HikAR server');
 });
-
-app.get('/getAnnotation', (req, res, next) => {
-  db.collection('annotation').find().toArray((err, result) => {
-    res.send(result);
-  });
-});
+//
+// app.get('/getAnnotation', (req, res, next) => {
+//   db.collection('annotation').find().toArray((err, result) => {
+//     res.send(result);
+//   });
+// });
 
 
 // START THE SERVER

@@ -10,6 +10,20 @@ export const getUsers = (req, res, next) => {
   });
 };
 
+export const UpdateUserInfo = (req, res, next) => {
+  const username = req.body.username;
+
+  User.findOne({ username }).then((user) => {
+    user.distance = req.body.distance || user.distance;
+    if (req.body.trail) {
+      const idx = user.trails.findIndex(req.body.trail);
+      console.log(idx);
+    } else {
+      user.trails.push([req.body.trail][1]);
+    }
+  });
+};
+
 // encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
