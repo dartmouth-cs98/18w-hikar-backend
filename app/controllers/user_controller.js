@@ -11,16 +11,26 @@ export const getUsers = (req, res, next) => {
 };
 
 export const UpdateUserInfo = (req, res, next) => {
-  const username = req.body.username;
+  const username = req.params.username;
 
   User.findOne({ username }).then((user) => {
+    console.log(user);
     user.distance = req.body.distance || user.distance;
+    const tuple = [req.body.trail, 1];
     if (req.body.trail) {
-      const idx = user.trails.findIndex(req.body.trail);
-      console.log(idx);
-    } else {
-      user.trails.push([req.body.trail][1]);
+      console.log(tuple);
+      const arr = user.TrailHistory;
+      if (idx) {
+        console.log(idx);
+      } else {
+        console.log(user.TrailHistory);
+        // user.TrailHistory.push(tuple);
+      }
+      // user.save();
     }
+    res.send('completed');
+  }).catch((error) => {
+    res.status(500).json({ error });
   });
 };
 

@@ -33,8 +33,10 @@ router.route('/query/:lat/:lon/:radius')
   .get(TrailController.queryTrails);
 
 // get all users
-router.route('/users/')
-  .put(UserController.UpdateUserInfo)
+router.route('/users/:username')
+  .put(UserController.UpdateUserInfo);
+
+router.route('/users')
   .get(UserController.getUsers);
 
 
