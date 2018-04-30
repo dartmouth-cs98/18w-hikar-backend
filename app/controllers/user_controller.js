@@ -19,12 +19,39 @@ export const UpdateUserInfo = (req, res, next) => {
     if (req.body.distance != null) {
       user.distance = req.body.distance + user.distance;
     }
-    const bool = trailVisited(user.trailHistory, req.body.trail);
+    // console.log(user.trailHistory, req.body.trail);
+    // console.log(req.ody.distance);
 
-    if (!bool) {
-      const tuple = [req.body.trail, 1];
-      user.trailHistory.push(tuple);
+
+    let bool;
+    const arr = [];
+
+    if (user.trailHistory.length == 0) {
+      bool = false;
+    } else {
+      console.log(user.trailHistory.length);
+      for (let i = 0; i < user.trailHistory.length; i++) {
+        console.log('here 2');
+        if (user.trailHistory[i][0] == req.body.trail) {
+          console.log('here14');
+          user.trailHistory[i][1] += 1;
+          bool = true;
+        }
+        arr.push(user.trailHistory[i]);
+        console.log('no for');
+      }
     }
+
+
+    console.log(bool);
+    if (bool == false) {
+      console.log('saghdsulf');
+      const tuple = [req.body.trail, 1];
+      arr.push(tuple);
+    }
+    console.log(arr);
+    user.trailHistory = arr;
+    console.log(user.trailHistory);
     user.save();
     res.send('completed');
   }).catch((error) => {
@@ -33,14 +60,21 @@ export const UpdateUserInfo = (req, res, next) => {
 };
 
 function trailVisited(trailHistory, trailName) {
-  for (i = 0; i < trailHistory.length(); i++) {
-    if (trailHistory[i][0] == trailName) {
-      const tuple = trailHistory[i];
-      tuple[1] += 1;
-      user.trailHistory[i] = tuple; 
-      return true;
+  if (trailHistory.length == 0) {
+    console.log('in func');
+    return false;
+  } else {
+    for (let i = 0; i < trailHistory.length(); i++) {
+      if (trailHistory[i][0] == trailName) {
+        const tuple = trailHistory[i];
+        tuple[1] += 1;
+        user.trailHistory[i] = tuple;
+        console.log('istrue');
+        return true;
+      }
     }
   }
+  console.log('was false');
   return false;
 }
 
