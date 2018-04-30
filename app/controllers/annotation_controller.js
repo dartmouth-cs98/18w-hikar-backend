@@ -4,8 +4,8 @@ export const postAnnotation = (req, res, next) => {
   const Ann = new Annotation();
   Ann.type = req.body.type;
   Ann.text = req.body.text;
-  Ann.lat = 0;
-  Ann.lon = 0;
+  Ann.lat = req.body.lat;
+  Ann.lon = req.body.long;
   Ann.save().then((result) => {
     res.send('annotation created');
   }).catch((error) => {
