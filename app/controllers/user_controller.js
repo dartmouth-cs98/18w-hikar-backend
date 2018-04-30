@@ -15,24 +15,34 @@ export const UpdateUserInfo = (req, res, next) => {
 
   User.findOne({ username }).then((user) => {
     console.log(user);
-    user.distance = req.body.distance || user.distance;
-    const tuple = [req.body.trail, 1];
-    if (req.body.trail) {
-      console.log(tuple);
-      const arr = user.TrailHistory;
-      if (idx) {
-        console.log(idx);
-      } else {
-        console.log(user.TrailHistory);
-        // user.TrailHistory.push(tuple);
-      }
-      // user.save();
+
+    if (req.body.distance != null) {
+      user.distance = req.body.distance + user.distance;
     }
+    const bool = trailVisited(user.trailHistory, req.body.trail);
+
+    if (!bool) {
+      const tuple = [req.body.trail, 1];
+      user.trailHistory.push(tuple);
+    }
+    user.save();
     res.send('completed');
   }).catch((error) => {
     res.status(500).json({ error });
   });
 };
+
+function trailVisited(trailHistory, trailName) {
+  for (i = 0; i < trailHistory.length(); i++) {
+    if (trailHistory[i][0] == trailName) {
+      const tuple = trailHistory[i];
+      tuple[1] += 1;
+      user.trailHistory[i] = tuple; 
+      return true;
+    }
+  }
+  return false;
+}
 
 // encodes a new token for a user object
 function tokenForUser(user) {
@@ -65,7 +75,7 @@ export const signup = (req, res, next) => {
     } else {
       user.password = password;
       user.username = username;
-      user.Distance = 0;
+      user.distance = 0;
       user.save().then((result) => {
         console.log(user.password);
         res.send({ token: tokenForUser(result) });

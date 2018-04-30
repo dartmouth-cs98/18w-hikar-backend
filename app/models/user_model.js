@@ -6,8 +6,8 @@ const User = new Schema({
   first: String,
   last: String,
   password: { type: String, select: false },
-  TrailHistory: { type: Array },
-  Distance: Number,
+  trailHistory: { type: Array },
+  distance: Number,
 });
 
 User.set('toJSON', {
