@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 });
 
 // // Sign in & sign up
-router.post('/signin', requireAuth, UserController.signin);
+router.post('/signin', requireSignin, UserController.signin);
 router.post('/signup', UserController.signup);
 //
 // // Return a user's information

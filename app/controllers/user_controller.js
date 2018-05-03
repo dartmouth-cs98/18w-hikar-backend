@@ -72,12 +72,14 @@ function trailVisited(trailHistory, trailName) {
 // encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
+  console.log(user);
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
 }
 
 // Sign in User. Auth token is sent if credentials are valid
 export const signin = (req, res, next) => {
-  return res.send({ token: tokenForUser(req.user) });
+  console.log(req.body);
+  return res.send({ token: tokenForUser(req.body.username) });
 };
 
 // Sign up new user
