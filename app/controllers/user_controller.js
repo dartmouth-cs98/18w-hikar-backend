@@ -19,39 +19,30 @@ export const UpdateUserInfo = (req, res, next) => {
     if (req.body.distance != null) {
       user.distance = req.body.distance + user.distance;
     }
-    // console.log(user.trailHistory, req.body.trail);
-    // console.log(req.ody.distance);
-
 
     let bool;
-    const arr = [];
 
     if (user.trailHistory.length == 0) {
       bool = false;
     } else {
       console.log(user.trailHistory.length);
-      for (let i = 0; i < user.trailHistory.length; i++) {
-        console.log('here 2');
+
+      const len = user.trailHistory.length;
+      for (let i = 0; i < len; i++) {
         if (user.trailHistory[i][0] == req.body.trail) {
-          console.log('here14');
           user.trailHistory[i][1] += 1;
           bool = true;
+          break;
         }
-        arr.push(user.trailHistory[i]);
-        console.log('no for');
       }
     }
 
-
-    console.log(bool);
     if (bool == false) {
-      console.log('saghdsulf');
       const tuple = [req.body.trail, 1];
-      arr.push(tuple);
+      user.trailHistory.push(tuple);
     }
-    console.log(arr);
-    user.trailHistory = arr;
-    console.log(user.trailHistory);
+
+    user.markModified('trailHistory');
     user.save();
     res.send('completed');
   }).catch((error) => {
