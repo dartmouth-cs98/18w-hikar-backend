@@ -10,6 +10,14 @@ export const getUsers = (req, res, next) => {
   });
 };
 
+export const getUser = (req, res, next) => {
+  const username = req.params.username;
+  User.findOne({ username }, (err, result) => {
+    res.send(result);
+  });
+};
+
+
 export const UpdateUserInfo = (req, res, next) => {
   const username = req.params.username;
 

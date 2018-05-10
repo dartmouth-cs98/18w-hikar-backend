@@ -34,7 +34,8 @@ router.route('/query/:lat/:lon/:radius')
 
 // get all users
 router.route('/users/:username')
-  .put(UserController.UpdateUserInfo);
+  .put(UserController.UpdateUserInfo)
+  .get(UserController.getUser);
 
 router.route('/users')
   .get(UserController.getUsers);
