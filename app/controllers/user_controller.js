@@ -45,7 +45,8 @@ export const UpdateUserInfo = (req, res, next) => {
       }
     }
 
-    if (bool == false) {
+    if (bool != true) {
+      console.log('here');
       const tuple = [req.body.trail, 1];
       user.trailHistory.push(tuple);
     }
