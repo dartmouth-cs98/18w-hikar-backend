@@ -7,7 +7,7 @@ export const postAnnotation = (req, res, next) => {
   Ann.lat = req.body.lat;
   Ann.lon = req.body.long;
   Ann.offset = req.body.offset;
-  Ann.font = req.body.font;
+  Ann.color = req.body.color;
   Ann.style = req.body.style;
   Ann.save().then((result) => {
     res.send('annotation created');

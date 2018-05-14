@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 const Annotation = new Schema({
   type: String,
   text: String,
-  font: String,
+  color: String,
   style: String,
   offset: String,
   lat: String,
