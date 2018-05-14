@@ -9,7 +9,7 @@ const User = new Schema({
   trailHistory: { type: Array },
   distance: String,
   radius: String,
-  boolean: String,
+  toggleAnnotation: String,
 });
 
 User.set('toJSON', {

@@ -8,6 +8,7 @@ const Annotation = new Schema({
   offset: String,
   lat: String,
   lon: String,
+  trailName: String,
 });
 
 const AnnotationModel = mongoose.model('annotation', Annotation);

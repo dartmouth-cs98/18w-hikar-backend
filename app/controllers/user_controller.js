@@ -1,6 +1,7 @@
 import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
+import { sortArray } from '../distance';
 
 dotenv.config({ silent: true });
 
@@ -28,30 +29,37 @@ export const UpdateUserInfo = (req, res, next) => {
       user.distance = req.body.distance + user.distance;
     }
 
+    user.radius = req.body.radius || user.radius;
+    user.toggleAnnotation = req.body.toggleAnnotation || user.toggleAnnotation;
+
+
     let bool;
 
-    if (user.trailHistory.length == 0) {
-      bool = false;
-    } else {
-      console.log(user.trailHistory.length);
+    if (req.body.trail) {
+      if (user.trailHistory.length == 0) {
+        bool = false;
+      } else {
+        console.log(user.trailHistory.length);
 
-      const len = user.trailHistory.length;
-      for (let i = 0; i < len; i++) {
-        if (user.trailHistory[i][0] == req.body.trail) {
-          user.trailHistory[i][1] += 1;
-          bool = true;
-          break;
+        const len = user.trailHistory.length;
+        for (let i = 0; i < len; i++) {
+          if (user.trailHistory[i][0] == req.body.trail) {
+            user.trailHistory[i][1] += 1;
+            bool = true;
+            break;
+          }
         }
       }
-    }
 
-    if (bool != true) {
-      console.log('here');
-      const tuple = [req.body.trail, 1];
-      user.trailHistory.push(tuple);
-    }
+      if (bool != true) {
+        console.log('here');
+        const tuple = [req.body.trail, 1];
+        user.trailHistory.push(tuple);
+      }
 
-    user.markModified('trailHistory');
+      if (user.trailHistory.length > 1) { sortArray(user.trailHistory); }
+      user.markModified('trailHistory');
+    }
     user.save();
     res.send('completed');
   }).catch((error) => {
@@ -59,24 +67,6 @@ export const UpdateUserInfo = (req, res, next) => {
   });
 };
 
-function trailVisited(trailHistory, trailName) {
-  if (trailHistory.length == 0) {
-    console.log('in func');
-    return false;
-  } else {
-    for (let i = 0; i < trailHistory.length(); i++) {
-      if (trailHistory[i][0] == trailName) {
-        const tuple = trailHistory[i];
-        tuple[1] += 1;
-        user.trailHistory[i] = tuple;
-        console.log('istrue');
-        return true;
-      }
-    }
-  }
-  console.log('was false');
-  return false;
-}
 
 // encodes a new token for a user object
 function tokenForUser(user) {
@@ -96,6 +86,8 @@ export const signup = (req, res, next) => {
   const user = new User();
   const password = req.body.password;
   const username = req.body.username;
+  const radius = req.body.radius;
+  const toggleAnnotation = req.body.toggleAnnotation;
   const trails = [];
   console.log(req.body);
 
@@ -112,6 +104,8 @@ export const signup = (req, res, next) => {
       user.password = password;
       user.username = username;
       user.distance = 0;
+      user.radius = radius;
+      user.toggleAnnotation = toggleAnnotation;
       user.save().then((result) => {
         console.log(user.password);
         res.send({ token: tokenForUser(result) });
