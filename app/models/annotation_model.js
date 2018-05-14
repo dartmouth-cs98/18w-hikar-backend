@@ -5,6 +5,7 @@ const Annotation = new Schema({
   text: String,
   font: String,
   style: String,
+  offset: Number,
   lat: Number,
   lon: Number,
 });
