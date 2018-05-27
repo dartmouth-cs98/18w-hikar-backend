@@ -86,8 +86,8 @@ export const signup = (req, res, next) => {
   const user = new User();
   const password = req.body.password;
   const username = req.body.username;
-  const radius = req.body.radius;
-  const toggleAnnotation = req.body.toggleAnnotation;
+  const radius = '5';
+  const toggleAnnotation = 'true';
   const trails = [];
   console.log(req.body);
 
@@ -99,7 +99,7 @@ export const signup = (req, res, next) => {
   // search Database to see if user pre-exists
   User.findOne({ username }).then((oldUsername) => {
     if (oldUsername) {
-      return res.status(422).send('This user already exists!');
+      res.status(422).send('user already exists');
     } else {
       user.password = password;
       user.username = username;
