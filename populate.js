@@ -1,6 +1,6 @@
 const axios = require('axios');
 const config = require('./export.json');
-const geo = require('./rad_60_Hanover.json');
+const geo = require('./NY.json');
 
 const mongodb = require('mongodb');
 
@@ -149,4 +149,4 @@ function postMany(Arr) {
   });
 }
 
-// postMany(trails);
+postMany(trails);

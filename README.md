@@ -21,6 +21,10 @@ The Hikar backend server handles the storage and access to hiking trails, annota
 
 * Deploy to Heroku with the command `git push heroku master`
 
+## Application
+
+* To view the README for the entire project, see [here](https://github.com/dartmouth-cs98/18w-hikar-frontend.git)
+
 ## Authors
 
 Dami Apoeso
@@ -29,10 +33,8 @@ Josh Thomas
 
 James Wang
 
-Gregory Hunter 
+Gregory Hunter
 
-Raunak Bhojwani 
+Raunak Bhojwani
 
 Johnny Brady  
- 
-  
